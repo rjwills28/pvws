@@ -63,8 +63,10 @@ public class Vtype2Json
 
         if (value instanceof VNumber)
             handleNumber(g, (VNumber) value, last_value);
-        else if (value instanceof VString)
+        else if (value instanceof VString) {
+            System.out.println("############## HERE 1");
             handleString(g, (VString) value, last_value);
+        }
         else if (value instanceof VEnum)
             handleEnum(g, (VEnum) value, last_value);
         else if (value instanceof VByteArray)
@@ -84,6 +86,7 @@ public class Vtype2Json
         {
             // TODO Are there more types that need to be handled?
         	// For now pass as text
+            System.out.println("############## HERE 2");
             g.writeStringField("text", value.toString());
         }
         // null: Neither 'value' nor 'text'
