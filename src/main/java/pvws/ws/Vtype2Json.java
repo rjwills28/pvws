@@ -75,6 +75,11 @@ public class Vtype2Json
         }
         else if (value instanceof VEnum)
             handleEnum(g, (VEnum) value, last_value);
+        // Serialize remaining number arrays (int, short) as b64int
+        else if (value instanceof VNumberArray) {
+            logger.log(Level.INFO,"############## HERE VNumberArray");
+            handleInts(g, (VNumberArray) value, last_value);
+        }
         else if (value instanceof VByteArray) {
             logger.log(Level.INFO,"############## HERE VByteArray");
             handleLongString(g, (VByteArray) value);
@@ -86,9 +91,7 @@ public class Vtype2Json
         else if (value instanceof VFloatArray)
             handleDoubles(g, (VNumberArray) value, last_value);
 
-        // Serialize remaining number arrays (int, short) as b64int
-        else if (value instanceof VNumberArray)
-            handleInts(g, (VNumberArray) value, last_value);
+        
 
         else if (value != null)
         {
