@@ -64,7 +64,6 @@ public class Vtype2Json
         g.writeStringField("pv", name);
 
         logger.log(Level.INFO,"############## HERE 0");
-        logger.log(Level.INFO,value);
 
         if (value instanceof VNumber) {
             logger.log(Level.INFO,"############## HERE VNumber");
