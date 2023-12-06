@@ -64,17 +64,22 @@ public class Vtype2Json
         g.writeStringField("pv", name);
 
         logger.log(Level.INFO,"############## HERE 0");
+        logger.log(Level.INFO,value);
 
-        if (value instanceof VNumber)
+        if (value instanceof VNumber) {
+            logger.log(Level.INFO,"############## HERE VNumber");
             handleNumber(g, (VNumber) value, last_value);
+        }
         else if (value instanceof VString) {
-            logger.log(Level.INFO,"############## HERE 1");
+            logger.log(Level.INFO,"############## HERE VString");
             handleString(g, (VString) value, last_value);
         }
         else if (value instanceof VEnum)
             handleEnum(g, (VEnum) value, last_value);
-        else if (value instanceof VByteArray)
+        else if (value instanceof VByteArray) {
+            logger.log(Level.INFO,"############## HERE VByteArray");
             handleLongString(g, (VByteArray) value);
+        }
 
         // Serialize double and float arrays as b64dbl
         else if (value instanceof VDoubleArray)
@@ -90,7 +95,7 @@ public class Vtype2Json
         {
             // TODO Are there more types that need to be handled?
         	// For now pass as text
-            logger.log(Level.INFO,"############## HERE 2");
+            logger.log(Level.INFO,"############## HERE toString");
             g.writeStringField("text", value.toString());
         }
         // null: Neither 'value' nor 'text'
