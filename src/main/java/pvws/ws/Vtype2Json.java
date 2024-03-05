@@ -7,7 +7,9 @@
 package pvws.ws;
 
 import static pvws.PVWebSocketContext.json_factory;
+// Remove following when done
 import static pvws.PVWebSocketContext.logger;
+import java.util.logging.Level;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
