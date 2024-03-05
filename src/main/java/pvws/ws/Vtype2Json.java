@@ -61,6 +61,7 @@ public class Vtype2Json
         g.writeStringField("type", "update");
         g.writeStringField("pv", name);
 
+        logger.log(Level.INFO,"############## HERE");
         if (value instanceof VNumber)
             handleNumber(g, (VNumber) value, last_value);
         else if (value instanceof VString)
