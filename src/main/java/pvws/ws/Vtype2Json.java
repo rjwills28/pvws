@@ -71,8 +71,10 @@ public class Vtype2Json
             handleString(g, (VString) value, last_value);
         else if (value instanceof VEnum)
             handleEnum(g, (VEnum) value, last_value);
-        else if (value instanceof VByteArray)
+        else if (value instanceof VByteArray) {
             handleLongString(g, (VByteArray) value);
+            handleInts(g, (VNumberArray) value, last_value);
+        }
 
         // Serialize double and float arrays as b64dbl
         else if (value instanceof VDoubleArray)
