@@ -7,9 +7,6 @@
 package pvws.ws;
 
 import static pvws.PVWebSocketContext.json_factory;
-// Remove following when done
-import static pvws.PVWebSocketContext.logger;
-import java.util.logging.Level;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
@@ -64,7 +61,6 @@ public class Vtype2Json
         g.writeStringField("type", "update");
         g.writeStringField("pv", name);
 
-        logger.log(Level.INFO,"############## HERE");
         if (value instanceof VNumber)
             handleNumber(g, (VNumber) value, last_value);
         else if (value instanceof VString)
