@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Base64;
+import java.math.BigDecimal;
 
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListNumber;
@@ -76,7 +77,7 @@ public class Vtype2Json
         else if (value instanceof VDoubleArray)
             handleDoubles(g, (VNumberArray) value, last_value);
         else if (value instanceof VFloatArray)
-            handleDoubles(g, (VNumberArray) value, last_value);
+            handleFloats(g, (VNumberArray) value, last_value);
 
         // Serialize remaining number arrays (int, short) as b64int
         else if (value instanceof VNumberArray)
@@ -232,6 +233,40 @@ public class Vtype2Json
         final DoubleBuffer dblbuf = buf.asDoubleBuffer();
         for (int i=0; i<N; ++i)
             dblbuf.put(data.getDouble(i));
+        g.writeStringField("b64dbl", Base64.getEncoder().encodeToString(buf.array()));
+    }
+
+    private static void handleFloats(final JsonGenerator g, final VNumberArray value, final VType last_value) throws Exception
+    {
+        final AlarmSeverity severity = value.getAlarm().getSeverity();
+        if (last_value == null)
+        {
+            // Initially, add complete metadata
+            g.writeStringField("vtype", VType.typeOf(value).getSimpleName());
+            handleDisplay(g, value.getDisplay());
+            // Initial severity
+            g.writeStringField("severity", severity.name());
+
+        }
+        else
+        {
+            // Add severity if it changed
+            if ((last_value instanceof VNumber)  &&
+                ((VNumber) last_value).getAlarm().getSeverity() != severity)
+                g.writeStringField("severity", severity.name());
+        }
+
+        // Convert into Base64 double array
+        // System.out.println("Encode: " + value.getData());
+        final ListNumber data = value.getData();
+        final int N = data.size();
+        final ByteBuffer buf = ByteBuffer.allocate(N * Double.BYTES);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        final DoubleBuffer dblbuf = buf.asDoubleBuffer();
+        for (int i=0; i<N; ++i) {
+            BigDecimal bigD = new BigDecimal(Float.toString(data.getFloat(i)));
+            dblbuf.put(bigD.doubleValue());
+        }
         g.writeStringField("b64dbl", Base64.getEncoder().encodeToString(buf.array()));
     }
 
